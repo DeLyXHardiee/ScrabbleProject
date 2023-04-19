@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "45SCs5v3VUal30JPKzKmffCl+vw//RHhc5p62lZIGa0VC2n/UFt5lPOIXcr0MSTikqsXWK6i4Rmof88kHz+Hjg==",
+  "dgSpecHash": "ZdWeUEcOoN23htOvoUX70ofRFkh0OyQ5Uz4SiWMNVBuwc6DrDpY2WAAhQBsmUCPojjuAHyxNXNwMdZ8sf4GwRw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+  "projectFilePath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\mar20\\.nuget\\packages\\fparsec\\1.1.1\\fparsec.1.1.1.nupkg.sha512",
     "C:\\Users\\mar20\\.nuget\\packages\\fsharp.core\\7.0.200\\fsharp.core.7.0.200.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {}
+    "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {}
   },
   "projects": {
-    "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+    "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectUniqueName": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
         "projectName": "ScrabbleBot",
-        "projectPath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
         "packagesPath": "C:\\Users\\mar20\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\obj\\",
+        "outputPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

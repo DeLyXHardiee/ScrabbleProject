@@ -1,4 +1,4 @@
-module Dictionary
+module internal Dictionary
     type Dictionary =
     | Node of Map<char, Dictionary> * bool // Dict with children Dicts containing characters and a boolean "end of the word"
     
@@ -38,3 +38,13 @@ module Dictionary
                     | Some(child) -> recursiveLooking word child (index + 1)
                     | None -> false
         recursiveLooking word dict 0
+
+    let step char dict = 
+        match dict with
+        | Node(children, endOfWord) when Map.isEmpty children -> None
+        | Node(children, endOfWord) -> 
+            match Map.tryFind c children with
+            | Some(value) -> 
+                match value with
+                | Node(children, endOfWord) -> Some(endOfWord, value)
+            | None -> None

@@ -939,11 +939,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+      "projectUniqueName": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
       "projectName": "ScrabbleTemplate",
-      "projectPath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+      "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
       "packagesPath": "C:\\Users\\mar20\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\obj\\",
+      "outputPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -962,8 +962,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
-              "projectPath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj"
+            "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+              "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0gIkEKVmomfwQX0fvGu/aB8e5EXKEUIUdvCw2Gh/xM+cWXVfsFkGnZVoi18fRR7fw8f+8yIa43xZ7fYH7h5ZnQ==",
+  "dgSpecHash": "LYh6OP6epPMIGlB47d/ecm5+BL9eKY/OxwFNsbHikbVIf3HnUlNlokXU8orZqM26OIe1u7UCmYVlppEuWP7+8Q==",
   "success": true,
-  "projectFilePath": "c:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+  "projectFilePath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\mar20\\.nuget\\packages\\fparsec\\1.1.1\\fparsec.1.1.1.nupkg.sha512",
     "C:\\Users\\mar20\\.nuget\\packages\\fsharp.core\\7.0.200\\fsharp.core.7.0.200.nupkg.sha512"

@@ -1,4 +1,4 @@
-module Dictionary
+module internal Dictionary
     type Dictionary =
         | Node of Map<char, Dictionary> * bool // Node with children nodes containing characters and a boolean for "end of the word"
     val empty : unit -> Dictionary
