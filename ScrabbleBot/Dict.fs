@@ -1,4 +1,4 @@
-module internal Dictionary
+module Dict
     type Dictionary =
     | Node of Map<char, Dictionary> * bool // Dict with children Dicts containing characters and a boolean "end of the word"
     
@@ -43,8 +43,11 @@ module internal Dictionary
         match dict with
         | Node(children, endOfWord) when Map.isEmpty children -> None
         | Node(children, endOfWord) -> 
-            match Map.tryFind c children with
+            match Map.tryFind char children with
             | Some(value) -> 
                 match value with
                 | Node(children, endOfWord) -> Some(endOfWord, value)
             | None -> None
+
+  (*   let rec mkDict words dict =
+        Seq.iter(fun s -> insert s dict) words *)

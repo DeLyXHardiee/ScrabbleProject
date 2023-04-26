@@ -17,11 +17,8 @@ module internal Parser
     type boardFun2 = coord -> Result<square option, Error>
         
     type board = {
-        center        : coord
-        defaultSquare : square
-        squares       : boardFun2
+        tiles : Map<coord, char>
     }
-
     
     let pIntToChar  = pstring "intToChar"
     let pPointValue = pstring "pointValue"
@@ -122,4 +119,8 @@ module internal Parser
 
     let parseBoardProg _ = failwith "not implemented"
 
-    let mkBoard (bp : boardProg) : board = failwith "not implemented"
+    let mkBoard (newTiles : Map<coord, char>) : board =
+        let board = {
+                    tiles = newTiles
+                }
+        board

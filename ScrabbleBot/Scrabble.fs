@@ -1,4 +1,4 @@
-﻿namespace YourClientName
+﻿namespace NiceSpare
 
 open ScrabbleUtil
 open ScrabbleUtil.ServerCommunication
@@ -43,7 +43,7 @@ module State =
 
     type state = {
         board         : Parser.board
-        dict          : Dictionary.Dict
+        dict          : Dict.Dictionary
         playerNumber  : uint32
         hand          : MultiSet.MultiSet<uint32>
     }
@@ -84,19 +84,28 @@ module Scrabble =
                 | [] -> hand
                 | x::xs -> addNewPiecesToHand xs (MultiSet.add (fst x) (snd x) hand)
 
+            let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, char>) = 
+                match ms with
+                | [] -> tiles
+                | x::xs -> updateTiles xs (Map.add (fst x) (fst (snd (snd x))) tiles)
+
             let updateState board dict playerNumber hand =
                 State.mkState board dict playerNumber hand
 
             match msg with
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
+                let newTiles = updateTiles ms st.board.tiles
+                let newBoard = Parser.mkBoard newTiles
                 let handRemovedUsedPieces = removeUsedPiecesFromHand ms st.hand
                 let handAddedNewPieces = addNewPiecesToHand newPieces handRemovedUsedPieces
                 (* Successful play by you. Update your state (remove old tiles, add the new ones, change turn, etc) *)
-                let st' = updateState st.board st.dict st.playerNumber handAddedNewPieces
+                let st' = updateState newBoard st.dict st.playerNumber handAddedNewPieces
                 aux st'
             | RCM (CMPlayed (pid, ms, points)) ->
                 (* Successful play by other player. Update your state *)
-                let st' = st // This state needs to be updated
+                let newTiles = updateTiles ms st.board.tiles
+                let newBoard = Parser.mkBoard newTiles
+                let st' = updateState newBoard st.dict st.playerNumber st.hand
                 aux st'
             | RCM (CMPlayFailed (pid, ms)) ->
                 (* Failed play. Update your state *)
@@ -111,7 +120,7 @@ module Scrabble =
 
     let startGame 
             (boardP : boardProg) 
-            (dictf : bool -> Dictionary.Dict) 
+            (dictf : bool -> Dict.Dictionary) 
             (numPlayers : uint32) 
             (playerNumber : uint32) 
             (playerTurn  : uint32) 
@@ -129,9 +138,9 @@ module Scrabble =
 
         //let dict = dictf true // Uncomment if using a gaddag for your dictionary
         let dict = dictf false // Uncomment if using a trie for your dictionary
-        let board = Parser.mkBoard boardP
+        let board = Parser.mkBoard
                   
         let handSet = List.fold (fun acc (x, k) -> MultiSet.add x k acc) MultiSet.empty hand
 
-        fun () -> playGame cstream tiles (State.mkState board dict playerNumber handSet)
+        fun () -> playGame cstream tiles (State.mkState (board Map.empty) dict playerNumber handSet)
         

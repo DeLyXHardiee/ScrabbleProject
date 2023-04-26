@@ -12,9 +12,7 @@ module internal Parser
     type boardFun2 = coord -> Result<square option, Error>
         
     type board = {
-        center        : coord
-        defaultSquare : square
-        squares       : boardFun2
+        tiles : Map<coord, char>
     }
 
-    val mkBoard : boardProg -> board
+    val mkBoard : Map<coord, char> -> board
