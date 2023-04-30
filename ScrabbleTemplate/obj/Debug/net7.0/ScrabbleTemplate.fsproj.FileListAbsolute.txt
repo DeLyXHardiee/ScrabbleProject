@@ -37,3 +37,6 @@ C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\refi
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.pdb
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.genruntimeconfig.cache
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ref\ScrabbleTemplate.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\refint\ScrabbleTemplate.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.pdb

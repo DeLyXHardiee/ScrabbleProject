@@ -4,14 +4,13 @@ open ScrabbleUtil
 open ScrabbleUtil.ServerCommunication
 
 open System.IO
+open System.Text.RegularExpressions
 
 open ScrabbleUtil.DebugPrint
 
 // The RegEx module is only used to parse human input. It is not used for the final product.
 
 module RegEx =
-    open System.Text.RegularExpressions
-
     let (|Regex|_|) pattern input =
         let m = Regex.Match(input, pattern)
         if m.Success then Some(List.tail [ for g in m.Groups -> g.Value ])
@@ -73,6 +72,16 @@ module Scrabble =
 
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
+
+            let readEnglishTxt =
+                seq {
+                    use reader = new System.IO.StreamReader("../ScrabbleTemplate/Dictionaries/English.txt")
+                    while not reader.EndOfStream do
+                        yield reader.ReadLine()
+                }
+
+            let mkDict = 
+                Dict.mkDict readEnglishTxt st.dict
 
             let rec removeUsedPiecesFromHand (ms : ((coord * (uint32 * (char * int))) list)) hand =
                 match ms with

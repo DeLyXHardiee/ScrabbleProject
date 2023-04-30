@@ -5,4 +5,4 @@ module Dict
     val insert : string -> Dictionary -> Dictionary
     val lookup : string -> Dictionary -> bool
     val step : char -> dict: Dictionary -> (bool * Dictionary) option
-    val mkDict : seq<string> -> Dictionary
+    val mkDict : seq<string> -> Dictionary -> Dictionary

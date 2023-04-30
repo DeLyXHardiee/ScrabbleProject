@@ -49,5 +49,5 @@ module Dict
                 | Node(children, endOfWord) -> Some(endOfWord, value)
             | None -> None
 
-  (*   let rec mkDict words dict =
-        Seq.iter(fun s -> insert s dict) words *)
+    let rec mkDict (words : seq<string>) (dict : Dictionary) =
+        Seq.fold(fun acc word -> insert word acc) dict words

@@ -11,3 +11,10 @@ C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleB
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
 C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ref\ScrabbleBot.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.AssemblyReference.cache
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfoInputs.cache
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfo.fs
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CoreCompileInputs.cache
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
+C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
