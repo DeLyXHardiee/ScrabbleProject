@@ -42,7 +42,7 @@ module State =
 
     type state = {
         board         : Parser.board
-        dict          : Dict.Dictionary
+        dict          : ScrabbleUtil.Dictionary.Dict
         playerNumber  : uint32
         hand          : MultiSet.MultiSet<uint32>
     }
@@ -56,6 +56,8 @@ module State =
 
 module Scrabble =
     open System.Threading
+    //open Dict
+    open Parser
 
     let playGame cstream pieces (st : State.state) =
 
@@ -80,10 +82,63 @@ module Scrabble =
                         yield reader.ReadLine()
                 }
 
-            let mkDict = 
-                Dict.mkDict readEnglishTxt st.dict
+            //let mkDict = 
+              //  ScrabbleUtil.Dictionary.mkDict readEnglishTxt st.dict
 
-            let rec removeUsedPiecesFromHand (ms : ((coord * (uint32 * (char * int))) list)) hand =
+            
+            /////////////
+            
+            let validMoves (board: board) (hand: (uint32 * uint32) list) (dict: ScrabbleUtil.Dictionary.Dict) =
+                let rec getConnectedTiles (coord: coord) (visited: Set<coord>) (tiles: Map<coord, char>) =
+                        let adjacentCoords = [
+                            (fst coord + 1, snd coord);
+                            (fst coord - 1,snd coord);
+                            (fst coord, snd coord + 1);
+                            (fst coord, snd coord - 1)
+                        ]
+                        let connectedTiles =
+                            adjacentCoords
+                            |> List.filter (fun c -> not (Set.contains c visited))
+                            |> List.filter (fun c -> tiles.ContainsKey c)
+                            |> List.filter (fun c -> tiles.[c] <> ' ')
+                            |> List.sortBy (fun c -> fst c, snd c)
+                        let newVisited = Set.union visited (Set.ofList connectedTiles)
+                        let newTiles = connectedTiles |> List.map (fun c -> (c, tiles.[c])) |> Map.ofList
+                        let remainingTiles = adjacentCoords |> List.filter (fun c -> not (Set.contains c newVisited))
+                        remainingTiles
+                        |> List.fold (fun (visited, tiles) c ->
+                            let (newVisited, newTiles) = getConnectedTiles c newVisited tiles
+                            (newVisited, Map.fold (fun acc key (value: char) -> Map.add key value acc) newTiles tiles)
+                        ) (newVisited, newTiles)
+
+                let rec validMoves' (hand: (uint32 * uint32) list) (tiles: Map<coord, char>) (dict: Dictionary.Dict) (visited: Set<coord>) (moves: (coord * uint32) list) =
+                    let tilesWithCoords = tiles |> Map.toList
+                    match hand, tilesWithCoords with
+                    | [], _ -> moves
+                    | _, [] -> moves
+                    | (letter, count)::handTail, (coord, tile)::tilesTail ->
+                        let newVisited = Set.add coord visited
+                        let (newVisited, connectedTiles) = getConnectedTiles coord newVisited tiles
+                        let newTiles = Map.fold (fun acc key (value: char) -> Map.add key value acc) (Map.remove coord tiles) connectedTiles
+                        let newDictOpt = ScrabbleUtil.Dictionary.step tile dict
+                        let newMoves = 
+                            match newDictOpt with
+                            | Some(true, _) -> (coord, letter)::moves
+                            | Some(false, _) -> moves
+                            | None -> moves
+                        if count > 1u then
+                            validMoves' ((letter, count - 1u)::handTail) (newTiles |> Map.add coord tile) dict newVisited newMoves
+                        else
+                            validMoves' handTail newTiles dict newVisited newMoves
+                    //| _, _::tilesTail ->
+                        //validMoves' hand tilesTail dict visited moves
+                validMoves' hand board.tiles dict Set.empty []
+
+            ///////////// 
+
+
+
+            let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
                 match ms with
                 | [] -> hand
                 | x::xs -> removeUsedPiecesFromHand (xs) (MultiSet.removeSingle (fst (snd x)) hand)
@@ -115,7 +170,9 @@ module Scrabble =
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
+                let validmoves = validMoves st.board (MultiSet.toList st.hand) st.dict
                 aux st'
+                
             | RCM (CMPlayFailed (pid, ms)) ->
                 (* Failed play. Update your state *)
                 let st' = st // This state needs to be updated
@@ -129,7 +186,7 @@ module Scrabble =
 
     let startGame 
             (boardP : boardProg) 
-            (dictf : bool -> Dict.Dictionary) 
+            (dictf : bool -> Dictionary.Dict) 
             (numPlayers : uint32) 
             (playerNumber : uint32) 
             (playerTurn  : uint32) 

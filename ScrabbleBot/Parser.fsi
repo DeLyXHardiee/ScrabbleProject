@@ -15,4 +15,4 @@ module internal Parser
         tiles : Map<coord, char>
     }
 
-    val mkBoard : Map<coord, char> -> board
+    val mkBoard : Map<ScrabbleUtil.coord, char> -> board

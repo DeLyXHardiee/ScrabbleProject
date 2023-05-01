@@ -7,7 +7,7 @@ module Scrabble =
 
     val startGame :
         boardProg ->                 (* Scrabble board *)
-        (bool -> Dict.Dictionary) -> (* Dictionary (call with true if using a Gaddag, and false if using a Trie) *)
+        (bool -> Dictionary.Dict) -> (* Dictionary (call with true if using a Gaddag, and false if using a Trie) *)
         uint32 ->                    (* Number of players *)
         uint32 ->                    (* Your player number *)
         uint32 ->                    (* starting player number *)

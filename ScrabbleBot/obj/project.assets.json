@@ -154,26 +154,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\EG\\.nuget\\packages\\": {}
+    "C:\\Users\\lukas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+      "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
       "projectName": "ScrabbleBot",
-      "projectPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
-      "packagesPath": "C:\\Users\\EG\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\obj\\",
+      "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+      "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\EG\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\sdk\\7.0.100\\FSharp\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },

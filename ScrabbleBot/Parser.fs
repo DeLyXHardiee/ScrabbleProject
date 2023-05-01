@@ -19,6 +19,7 @@ module internal Parser
     type board = {
         tiles : Map<coord, char>
     }
+
     
     let pIntToChar  = pstring "intToChar"
     let pPointValue = pstring "pointValue"
