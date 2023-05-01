@@ -42,7 +42,7 @@ module State =
 
     type state = {
         board         : Parser.board
-        dict          : Dict.Dictionary
+        dict          : ScrabbleUtil.Dictionary.Dict
         playerNumber  : uint32
         hand          : MultiSet.MultiSet<uint32>
     }
@@ -72,16 +72,6 @@ module Scrabble =
 
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
-
-            let readEnglishTxt =
-                seq {
-                    use reader = new System.IO.StreamReader("../ScrabbleTemplate/Dictionaries/English.txt")
-                    while not reader.EndOfStream do
-                        yield reader.ReadLine()
-                }
-
-            let mkDict = 
-                Dict.mkDict readEnglishTxt st.dict
 
             let rec removeUsedPiecesFromHand (ms : ((coord * (uint32 * (char * int))) list)) hand =
                 match ms with
@@ -129,7 +119,7 @@ module Scrabble =
 
     let startGame 
             (boardP : boardProg) 
-            (dictf : bool -> Dict.Dictionary) 
+            (dictf : bool -> ScrabbleUtil.Dictionary.Dict) 
             (numPlayers : uint32) 
             (playerNumber : uint32) 
             (playerTurn  : uint32) 

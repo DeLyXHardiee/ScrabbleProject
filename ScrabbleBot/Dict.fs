@@ -1,7 +1,13 @@
 module Dict
     type Dictionary =
     | Node of Map<char, Dictionary> * bool // Dict with children Dicts containing characters and a boolean "end of the word"
-    
+
+    type 'a dictAPI = 
+        (unit -> 'a) * // empty
+        (string -> 'a -> 'a) * // insert
+        (char -> 'a -> (bool * 'a) option) * // step
+        ('a -> (bool * 'a) option) option // reverse
+
     let empty () = Node(Map.empty, false)
 
     let insert (word : string) (dict : Dictionary) =
@@ -49,5 +55,10 @@ module Dict
                 | Node(children, endOfWord) -> Some(endOfWord, value)
             | None -> None
 
-    let rec mkDict (words : seq<string>) (dict : Dictionary) =
-        Seq.fold(fun acc word -> insert word acc) dict words
+    let rec mkDict<'a> (words : seq<string>) (dictAPI : 'a dictAPI option) =
+        let emptyDict = dictAPI |> Option.map (fun (emptyAPI, insertAPI, stepAPI, reverse) -> empty())
+        match emptyDict with
+        | None -> failwith "Invalid Dictionary API"
+        | Some emptyDict -> 
+            Seq.fold(fun acc word -> insert word acc) emptyDict words
+            |>  fun d -> fun success -> if success then d else empty ()
