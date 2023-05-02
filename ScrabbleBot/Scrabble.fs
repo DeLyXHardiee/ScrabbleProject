@@ -82,14 +82,15 @@ module Scrabble =
                         yield reader.ReadLine()
                 }
 
-            let findWord (key:coord) (value:uint32) (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) = 
-                match List.tryFind (fun x y -> y = value) English.tiles with
-                | Some x -> x
-                | None -> []
-                Dictionary.step (ScrabbleUtil.English.tiles value)
+            let findCharacter (key:coord) (value:uint32) (pieces:Map<uint32, tile>) (dict:Dictionary.Dict) = 
+                let startingChar = match Map.tryFind value pieces with
+                                        | Some tile -> match Set.maxElement tile with
+                                                            | piece -> fst piece
+                                        | None -> failwith "Not a valid character"
+                Dictionary.step (startingChar) dict
 
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
-                board.tiles |> Map.iter (fun key value -> findWord key value hand dict) 
+                board.tiles |> Map.iter (fun key value -> findCharacter key value pieces dict)
            
 
             
