@@ -56,6 +56,8 @@ module State =
 
 module Scrabble =
     open System.Threading
+    //open Dict
+    open Parser
 
     let playGame cstream pieces (st : State.state) =
 
@@ -73,7 +75,26 @@ module Scrabble =
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
 
-            let rec removeUsedPiecesFromHand (ms : ((coord * (uint32 * (char * int))) list)) hand =
+            let readEnglishTxt =
+                seq {
+                    use reader = new System.IO.StreamReader("../ScrabbleTemplate/Dictionaries/English.txt")
+                    while not reader.EndOfStream do
+                        yield reader.ReadLine()
+                }
+
+            let findWord (key:coord) (value:uint32) (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) = 
+                match List.tryFind (fun x y -> y = value) English.tiles with
+                | Some x -> x
+                | None -> []
+                Dictionary.step (ScrabbleUtil.English.tiles value)
+
+            let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
+                board.tiles |> Map.iter (fun key value -> findWord key value hand dict) 
+           
+
+            
+
+            let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
                 match ms with
                 | [] -> hand
                 | x::xs -> removeUsedPiecesFromHand (xs) (MultiSet.removeSingle (fst (snd x)) hand)
@@ -83,7 +104,7 @@ module Scrabble =
                 | [] -> hand
                 | x::xs -> addNewPiecesToHand xs (MultiSet.add (fst x) (snd x) hand)
 
-            let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, char>) = 
+            let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, uint32>) = 
                 match ms with
                 | [] -> tiles
                 | x::xs -> updateTiles xs (Map.add (fst x) (fst (snd (snd x))) tiles)
@@ -105,7 +126,9 @@ module Scrabble =
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
+                let validmoves = validMoves st.board (MultiSet.toList st.hand) st.dict
                 aux st'
+                
             | RCM (CMPlayFailed (pid, ms)) ->
                 (* Failed play. Update your state *)
                 let st' = st // This state needs to be updated
@@ -119,7 +142,7 @@ module Scrabble =
 
     let startGame 
             (boardP : boardProg) 
-            (dictf : bool -> ScrabbleUtil.Dictionary.Dict) 
+            (dictf : bool -> Dictionary.Dict) 
             (numPlayers : uint32) 
             (playerNumber : uint32) 
             (playerTurn  : uint32) 

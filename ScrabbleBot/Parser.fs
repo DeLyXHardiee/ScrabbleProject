@@ -17,7 +17,7 @@ module internal Parser
     type boardFun2 = coord -> Result<square option, Error>
         
     type board = {
-        tiles : Map<coord, char>
+        tiles : Map<coord, uint32>
     }
     
     let pIntToChar  = pstring "intToChar"
@@ -119,7 +119,7 @@ module internal Parser
 
     let parseBoardProg _ = failwith "not implemented"
 
-    let mkBoard (newTiles : Map<coord, char>) : board =
+    let mkBoard (newTiles : Map<coord, uint32>) : board =
         let board = {
                     tiles = newTiles
                 }
