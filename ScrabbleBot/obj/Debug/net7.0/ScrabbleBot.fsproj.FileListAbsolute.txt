@@ -31,3 +31,8 @@ C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CoreCompileInputs.cache
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CopyComplete
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ref\ScrabbleBot.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfoInputs.cache
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfo.fs
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb

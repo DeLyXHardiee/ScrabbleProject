@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q27VAnKgd+9P3ZaFNAtZqbWRuzhCb0nJSk01PDmT1iXw2GSXkjgdTGUDCkXHbeNQSlRWnsrInCsaDTrN4rhOWA==",
+  "dgSpecHash": "dw01Nx+b8JAw6YFm9zK+ag29yKupoNr67IHw0DgmNnzUsv5hcpcslBTarBcUJeMvsXWSC6iHiGXK2PTbKGTc8A==",
   "success": true,
-  "projectFilePath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+  "projectFilePath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\lukas\\.nuget\\packages\\fparsec\\1.1.1\\fparsec.1.1.1.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\fsharp.core\\7.0.200\\fsharp.core.7.0.200.nupkg.sha512"

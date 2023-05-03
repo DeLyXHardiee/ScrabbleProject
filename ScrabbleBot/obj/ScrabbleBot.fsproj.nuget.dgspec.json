@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {}
+    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj": {}
   },
   "projects": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj",
         "projectName": "ScrabbleBot",
-        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj",
         "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\obj\\",
+        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -76,6 +76,16 @@ module Scrabble =
             let handWithTiles = MultiSet.add 5u 1u handWithTiles
             let handWithTiles = MultiSet.add 19u 1u handWithTiles
             
+            let rec stepIntoWord (word:string) (dict:Dictionary.Dict) : Dictionary.Dict =
+                let characters = Seq.toList word
+                let rec aux (c:char) (startDict:Dictionary.Dict)= 
+                    match Dictionary.step c startDict with
+                    | Some (_,subDict: Dictionary.Dict) -> aux c subDict 
+                    | None -> failwith "shouldnt happen"
+                //List.fold(fun characters current-> conc elem current) "" l
+                
+                List.fold (fun c -> aux c dict) dict characters
+                    
             let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
                     match Dictionary.step (uintToChar letter) dict with 
@@ -91,10 +101,12 @@ module Scrabble =
                         else acc 
                     | None -> acc
                 ) "" hand
-            let validWord = findValidWord handWithTiles st.dict (0,0) (0,1) ("")
+            let validWord = findValidWord handWithTiles st.dict (0,0) (0,1) ("AP")
             
             forcePrint validWord
             forcePrint "validWord\n"
+
+            //let makeMove (startPos:coord) (alreadyPlayed:string) (word:string) = 
 
 
             let input =  System.Console.ReadLine()
@@ -208,3 +220,4 @@ module Scrabble =
         let handSet = List.fold (fun acc (x, k) -> MultiSet.add x k acc) MultiSet.empty hand
 
         fun () -> playGame cstream tiles (State.mkState (board Map.empty) dict playerNumber handSet)
+        
