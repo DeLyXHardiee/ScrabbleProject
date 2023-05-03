@@ -65,6 +65,7 @@ module Scrabble =
             Print.printHand pieces (State.hand st)
 
             // remove the force print when you move on from manual input (or when you have learnt the format)
+            
             forcePrint "Input move (format '(<x-coordinate> <y-coordinate> <piece id><character><point-value> )*', note the absence of space between the last inputs)\n\n"
             let input =  System.Console.ReadLine()
             let move = RegEx.parseMove input
@@ -99,6 +100,7 @@ module Scrabble =
                         else acc 
                     | None -> acc
                 ) "" hand
+            
                 // step på bogstav
                 //match some = en vej videre med bogstav
 
@@ -106,8 +108,8 @@ module Scrabble =
 
                 //none betyder ingen vej videre - ret acc
 
-            let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
-                board.tiles |> Map.iter (fun key value -> uintToChar value)
+            (*let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
+                board.tiles |> Map.iter (fun key value -> uintToChar value)*)
             (*
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
                 let chars = 
@@ -117,7 +119,11 @@ module Scrabble =
                 chars
                 //board.tiles |> Map.iter (fun key value -> convertToChar value pieces)
            *)
-
+            let myhand = MultiSet.empty
+            let handWithTiles = MultiSet.add 6u 2u
+            let string = "this is the string" + (uintToChar 0u|>string)
+            forcePrint string
+            //forcePrint "xd"
             
 
             let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
@@ -133,7 +139,7 @@ module Scrabble =
             let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, uint32>) = 
                 match ms with
                 | [] -> tiles
-                | x::xs -> updateTiles xs (Map.add (fst x) (fst (snd (snd x))) tiles)
+                | x::xs -> updateTiles xs (Map.add (fst x) (fst (snd x)) tiles)
 
             let updateState board dict playerNumber hand =
                 State.mkState board dict playerNumber hand
@@ -152,7 +158,7 @@ module Scrabble =
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
-                let validmoves = findValidMove st.board (MultiSet.toList st.hand) st.dict
+                //let validmoves = findValidMove st.board (MultiSet.toList st.hand) st.dict
                 aux st'
                 
             | RCM (CMPlayFailed (pid, ms)) ->

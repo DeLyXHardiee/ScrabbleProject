@@ -23,3 +23,11 @@ c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\
 c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
 c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
 c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.deps.json
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleUtil.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.AssemblyReference.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CoreCompileInputs.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CopyComplete
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ref\ScrabbleBot.dll

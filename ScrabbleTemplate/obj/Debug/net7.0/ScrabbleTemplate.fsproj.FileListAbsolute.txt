@@ -40,3 +40,42 @@ C:\Users\mar20\Desktop\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ref\
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.dll
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\refint\ScrabbleTemplate.dll
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.pdb
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.AssemblyInfoInputs.cache
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.AssemblyInfo.fs
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\refint\ScrabbleTemplate.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleTemplate.exe
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleTemplate.deps.json
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleTemplate.runtimeconfig.json
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleTemplate.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleTemplate.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\FParsec.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\FParsecCS.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\FSharp.Core.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\FSharp.Quotations.Evaluator.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\FsPickler.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\cs\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\de\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\es\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\fr\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\it\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ja\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ko\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\pl\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\pt-BR\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ru\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\tr\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\zh-Hans\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\zh-Hant\FSharp.Core.resources.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\Oxyphenbutazone.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleBot.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleLib.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleServer.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleUtil.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\bin\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.AssemblyReference.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.CoreCompileInputs.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.CopyComplete
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.genruntimeconfig.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ref\ScrabbleTemplate.dll
