@@ -18,10 +18,7 @@ module internal MultiSet
         else 
             MultiSet (Map.add a ((Map.find a s) - n) s)
     let removeSingle a (MultiSet s) = 
-        if Map.containsKey a s then
-            MultiSet (Map.add a ((Map.find a s) - 1u) s)
-        else
-            MultiSet s
+        remove a 1u (MultiSet s)
     let fold f acc (MultiSet s) = Map.fold f acc s
     let foldBack f (MultiSet s) acc = Map.foldBack f s acc
     let ofList lst = List.fold(fun (s : MultiSet<'a>) x -> addSingle x s) empty lst

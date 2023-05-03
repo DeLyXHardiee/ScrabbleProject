@@ -1,26 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {}
+    "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {}
   },
   "projects": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+    "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectUniqueName": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
         "projectName": "ScrabbleBot",
-        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
-        "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\obj\\",
+        "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "packagesPath": "C:\\Users\\mar20\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\mar20\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\sdk\\7.0.100\\FSharp\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.105\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -62,35 +65,38 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.105\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {
+    "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+        "projectUniqueName": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
         "projectName": "ScrabbleTemplate",
-        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
-        "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleTemplate\\obj\\",
+        "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+        "packagesPath": "C:\\Users\\mar20\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleTemplate\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\mar20\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\sdk\\7.0.100\\FSharp\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.105\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
-                "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj"
+              "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+                "projectPath": "C:\\Users\\mar20\\Desktop\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj"
               }
             }
           }
@@ -133,7 +139,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.105\\RuntimeIdentifierGraph.json"
         }
       }
     }

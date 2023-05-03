@@ -66,10 +66,40 @@ module Scrabble =
 
             // remove the force print when you move on from manual input (or when you have learnt the format)
             
-            forcePrint "Input move (format '(<x-coordinate> <y-coordinate> <piece id><character><point-value> )*', note the absence of space between the last inputs)\n\n"
+            forcePrint "Input move (format '(<x-coordinate> <y-coordinate> <piece id><character><point-value> )*', note the absence of space between the last inputs)\n\n"            
+            forcePrint "lul\n\n"
+
+            let uintToChar id = char(id + 64u)
+            let myhand = MultiSet.empty
+            let handWithTiles = MultiSet.add 1u 1u myhand
+            let handWithTiles = MultiSet.add 16u 1u handWithTiles
+            let handWithTiles = MultiSet.add 5u 1u handWithTiles
+            let handWithTiles = MultiSet.add 19u 1u handWithTiles
+            
+            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (localAcc:string) : string =
+                MultiSet.fold (fun acc letter count -> 
+                    match Dictionary.step (uintToChar letter) dict with 
+                    | Some (endOfWord, subDict) ->
+                        let sLetter = (uintToChar letter)
+                        let currentString = localAcc + (string) sLetter
+                        let handSize = string(MultiSet.size hand)
+                        let newHand = MultiSet.removeSingle letter hand
+                        let handSize = string(MultiSet.size newHand)
+                        let branch = findValidWord newHand subDict startPos direction currentString
+                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length then currentString
+                        elif branch.Length > acc.Length then branch
+                        else acc 
+                    | None -> acc
+                ) "" hand
+            let validWord = findValidWord handWithTiles st.dict (0,0) (0,1) ("")
+            
+            forcePrint validWord
+            forcePrint "validWord\n"
+
+
             let input =  System.Console.ReadLine()
             let move = RegEx.parseMove input
-
+            forcePrint "lul"
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             send cstream (SMPlay move)
 
@@ -84,22 +114,7 @@ module Scrabble =
                                         | None -> failwith "Not a valid character"
                 startingChar
 
-            let uintToChar id = char(id + 64u)
-
-            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (s:string) : string =
-                MultiSet.fold (fun acc letter count -> 
-                    match Dictionary.step (uintToChar letter) dict with 
-                    | Some (endOfWord, subDict) ->
-                        let sLetter = (uintToChar letter)
-                        let currentString = s + (string) sLetter
-
-                        let newHand = MultiSet.removeSingle letter hand
-                        let branch = findValidWord newHand subDict startPos direction currentString
-                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length then currentString
-                        elif branch.Length > acc.Length then branch
-                        else acc 
-                    | None -> acc
-                ) "" hand
+            
             
                 // step på bogstav
                 //match some = en vej videre med bogstav
@@ -119,11 +134,7 @@ module Scrabble =
                 chars
                 //board.tiles |> Map.iter (fun key value -> convertToChar value pieces)
            *)
-            let myhand = MultiSet.empty
-            let handWithTiles = MultiSet.add 6u 2u
-            let string = "this is the string" + (uintToChar 0u|>string)
-            forcePrint string
-            //forcePrint "xd"
+      
             
 
             let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
@@ -197,4 +208,3 @@ module Scrabble =
         let handSet = List.fold (fun acc (x, k) -> MultiSet.add x k acc) MultiSet.empty hand
 
         fun () -> playGame cstream tiles (State.mkState (board Map.empty) dict playerNumber handSet)
-        
