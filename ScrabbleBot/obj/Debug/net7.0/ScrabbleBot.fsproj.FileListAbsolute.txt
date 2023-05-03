@@ -18,8 +18,16 @@ C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\S
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
 C:\Users\EG\Desktop\4 Semester\F#\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
-c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfoInputs.cache
-c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfo.fs
-c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
-c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
-c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.deps.json
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\bin\Debug\net7.0\ScrabbleUtil.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.AssemblyReference.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfoInputs.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.AssemblyInfo.fs
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CoreCompileInputs.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.fsproj.CopyComplete
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\refint\ScrabbleBot.dll
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ScrabbleBot.pdb
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleBot\obj\Debug\net7.0\ref\ScrabbleBot.dll
