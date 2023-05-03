@@ -76,15 +76,14 @@ module Scrabble =
             let handWithTiles = MultiSet.add 5u 1u handWithTiles
             let handWithTiles = MultiSet.add 19u 1u handWithTiles
             
+            // Call when you have found starter and propegate dictionary into findValidWord
             let rec stepIntoWord (word:string) (dict:Dictionary.Dict) : Dictionary.Dict =
                 let characters = Seq.toList word
                 let rec aux (c:char) (startDict:Dictionary.Dict)= 
                     match Dictionary.step c startDict with
                     | Some (_,subDict: Dictionary.Dict) -> aux c subDict 
                     | None -> failwith "shouldnt happen"
-                //List.fold(fun characters current-> conc elem current) "" l
-                
-                List.fold (fun c -> aux c dict) dict characters
+                List.fold (fun d c -> aux c d) dict characters
                     
             let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
