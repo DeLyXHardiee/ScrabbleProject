@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {}
+    "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {}
   },
   "projects": {
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj": {
+    "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "projectUniqueName": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
         "projectName": "ScrabbleBot",
-        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj",
-        "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\obj\\",
+        "projectPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj",
+        "packagesPath": "C:\\Users\\EG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\EG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\sdk\\7.0.100\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -66,22 +68,24 @@
         }
       }
     },
-    "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {
+    "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+        "projectUniqueName": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
         "projectName": "ScrabbleTemplate",
-        "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
-        "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleTemplate\\obj\\",
+        "projectPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleTemplate\\ScrabbleTemplate.fsproj",
+        "packagesPath": "C:\\Users\\EG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleTemplate\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\EG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\sdk\\7.0.100\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -89,8 +93,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj": {
-                "projectPath": "c:\\Users\\lukas\\OneDrive\\Skrivebord\\ScrabbleProjectNew\\ScrabbleBot\\ScrabbleBot.fsproj"
+              "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj": {
+                "projectPath": "C:\\Users\\EG\\Desktop\\4 Semester\\F#\\ScrabbleProject\\ScrabbleBot\\ScrabbleBot.fsproj"
               }
             }
           }

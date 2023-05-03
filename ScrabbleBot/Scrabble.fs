@@ -126,7 +126,6 @@ module Scrabble =
                         moveHelper newPos dir xs (move :: moves)
                 moveHelper startPos direction (Seq.toList(word)) []
 
-            let move = makeMove (0,0) (0,1) (findValidWord st.hand st.dict (0,0) "") 
             //forcePrint moves
             //(move:list<(int * int) * (uint32 * (char * int))>)
             //list<(int * int) * (uint32 * (char * int))>
@@ -136,10 +135,9 @@ module Scrabble =
             // findValidWord (stepIntoWord dict)
             // makeMove starter            
 
-
-            let input =  System.Console.ReadLine()
             //let move = RegEx.parseMove input
-            forcePrint "lul"
+            let move = makeMove (-1, 0) (1, 0) (findValidWord st.hand st.dict (0,0) "") 
+            forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             send cstream (SMPlay move)
 
