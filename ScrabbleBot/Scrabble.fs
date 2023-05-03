@@ -69,7 +69,15 @@ module Scrabble =
             forcePrint "Input move (format '(<x-coordinate> <y-coordinate> <piece id><character><point-value> )*', note the absence of space between the last inputs)\n\n"            
             forcePrint "lul\n\n"
 
+            let convertToPoints (value:uint32) (pieces:Map<uint32, tile>) : int = 
+                let points = match Map.tryFind value pieces with
+                                        | Some tile -> match Set.maxElement tile with
+                                                            | piece -> snd piece
+                                        | None -> failwith "Not a valid character"
+                points
+
             let uintToChar id = char(id + 64u)
+            let charToUint c = uint32(c)-64u
             let myhand = MultiSet.empty
             let handWithTiles = MultiSet.add 1u 1u myhand
             let handWithTiles = MultiSet.add 16u 1u handWithTiles
@@ -85,31 +93,52 @@ module Scrabble =
                     | None -> failwith "shouldnt happen"
                 List.fold (fun d c -> aux c d) dict characters
                     
-            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (localAcc:string) : string =
+            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
                     match Dictionary.step (uintToChar letter) dict with 
                     | Some (endOfWord, subDict) ->
                         let sLetter = (uintToChar letter)
                         let currentString = localAcc + (string) sLetter
-                        let handSize = string(MultiSet.size hand)
                         let newHand = MultiSet.removeSingle letter hand
-                        let handSize = string(MultiSet.size newHand)
-                        let branch = findValidWord newHand subDict startPos direction currentString
+                        let branch = findValidWord newHand subDict startPos currentString
                         if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length then currentString
                         elif branch.Length > acc.Length then branch
                         else acc 
                     | None -> acc
                 ) "" hand
-            let validWord = findValidWord handWithTiles st.dict (0,0) (0,1) ("AP")
+            let validWord = findValidWord st.hand st.dict (0,0) ("")
+            
             
             forcePrint validWord
             forcePrint "validWord\n"
 
-            //let makeMove (startPos:coord) (alreadyPlayed:string) (word:string) = 
+            let makeMove (startPos:coord) (direction:coord) (word:string)  = 
+                let rec moveHelper (pos:coord) dir remainingWord (moves:list<coord * (uint32 * (char * int))>) =
+                    let newPos:coord =
+                        if Coord.getX dir = 1 then
+                            Coord.mkCoordinate (Coord.getX pos + 1) (Coord.getY pos)
+                        else
+                            Coord.mkCoordinate (Coord.getX pos) (Coord.getY pos + 1)
+                    match remainingWord with
+                    | [] -> moves
+                    | w::xs -> 
+                        let move = (newPos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
+                        moveHelper newPos dir xs (move :: moves)
+                moveHelper startPos direction (Seq.toList(word)) []
+
+            let move = makeMove (0,0) (0,1) (findValidWord st.hand st.dict (0,0) "") 
+            //forcePrint moves
+            //(move:list<(int * int) * (uint32 * (char * int))>)
+            //list<(int * int) * (uint32 * (char * int))>
+
+            //let findStarters() = 
+            //stepIntoWord
+            // findValidWord (stepIntoWord dict)
+            // makeMove starter            
 
 
             let input =  System.Console.ReadLine()
-            let move = RegEx.parseMove input
+            //let move = RegEx.parseMove input
             forcePrint "lul"
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             send cstream (SMPlay move)
@@ -118,14 +147,6 @@ module Scrabble =
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
                 
 
-            let convertToChar (value:uint32) (pieces:Map<uint32, tile>) : char = 
-                let startingChar = match Map.tryFind value pieces with
-                                        | Some tile -> match Set.maxElement tile with
-                                                            | piece -> fst piece
-                                        | None -> failwith "Not a valid character"
-                startingChar
-
-            
             
                 // step på bogstav
                 //match some = en vej videre med bogstav

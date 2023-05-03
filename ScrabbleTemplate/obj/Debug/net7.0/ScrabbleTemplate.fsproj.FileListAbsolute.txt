@@ -79,3 +79,7 @@ C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\ne
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.CopyComplete
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.genruntimeconfig.cache
 C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProject\ScrabbleTemplate\obj\Debug\net7.0\ref\ScrabbleTemplate.dll
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.AssemblyInfoInputs.cache
+c:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.AssemblyInfo.fs
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.AssemblyReference.cache
+C:\Users\lukas\OneDrive\Skrivebord\ScrabbleProjectNew\ScrabbleTemplate\obj\Debug\net7.0\ScrabbleTemplate.fsproj.CoreCompileInputs.cache
