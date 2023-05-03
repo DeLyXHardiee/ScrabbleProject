@@ -74,24 +74,49 @@ module Scrabble =
 
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
+                
 
-            let readEnglishTxt =
-                seq {
-                    use reader = new System.IO.StreamReader("../ScrabbleTemplate/Dictionaries/English.txt")
-                    while not reader.EndOfStream do
-                        yield reader.ReadLine()
-                }
-
-            let findCharacter (key:coord) (value:uint32) (pieces:Map<uint32, tile>) (dict:Dictionary.Dict) = 
+            let convertToChar (value:uint32) (pieces:Map<uint32, tile>) : char = 
                 let startingChar = match Map.tryFind value pieces with
                                         | Some tile -> match Set.maxElement tile with
                                                             | piece -> fst piece
                                         | None -> failwith "Not a valid character"
-                Dictionary.step (startingChar) dict
+                startingChar
+
+            let uintToChar id = char(id + 64u)
+
+            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (direction:coord) (s:string) : string =
+                MultiSet.fold (fun acc letter count -> 
+                    match Dictionary.step (uintToChar letter) dict with 
+                    | Some (endOfWord, subDict) ->
+                        let sLetter = (uintToChar letter)
+                        let currentString = s + (string) sLetter
+
+                        let newHand = MultiSet.removeSingle letter hand
+                        let branch = findValidWord newHand subDict startPos direction currentString
+                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length then currentString
+                        elif branch.Length > acc.Length then branch
+                        else acc 
+                    | None -> acc
+                ) "" hand
+                // step på bogstav
+                //match some = en vej videre med bogstav
+
+                // kald findvalidword rekursivt uden det brugte bogstav
+
+                //none betyder ingen vej videre - ret acc
 
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
-                board.tiles |> Map.iter (fun key value -> findCharacter key value pieces dict)
-           
+                board.tiles |> Map.iter (fun key value -> uintToChar value)
+            (*
+            let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
+                let chars = 
+                    board.tiles 
+                    |> Seq.collect (fun (key, value) -> convertToChar value pieces)
+                    |> List.ofSeq
+                chars
+                //board.tiles |> Map.iter (fun key value -> convertToChar value pieces)
+           *)
 
             
 
@@ -127,7 +152,7 @@ module Scrabble =
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
-                let validmoves = validMoves st.board (MultiSet.toList st.hand) st.dict
+                let validmoves = findValidMove st.board (MultiSet.toList st.hand) st.dict
                 aux st'
                 
             | RCM (CMPlayFailed (pid, ms)) ->
