@@ -137,17 +137,36 @@ module Scrabble =
                 if Coord.getX direction = 1 then [((Coord.getX next, ((Coord.getY next) - 1))); (Coord.getX next, (Coord.getY next) + 1); ((Coord.getX next) + 1, Coord.getY next)]
                 else [((Coord.getX next) - 1, (Coord.getY next)); ((Coord.getX next) + 1, Coord.getY next); ((Coord.getX next), (Coord.getY next) + 1)]
 
+
             let rec isAvilablie (coords: coord List) (board: board) =
                 match coords with 
                 | x::xs -> match Map.tryFind x board.tiles with 
-                            | Some -> false
+                            | Some _ -> false
                             | None -> isAvilablie xs board
                 | [] -> true
-        
-            let findLengthFromStarter (coord:coord) (direction:coord) (board:board) = 
-                match direction with
-                | (0,1) -> if Map.tryFind board.tiles then
 
+
+            let findLengthFromStarter (coord:coord) (direction:coord) (board:board) = 
+                let rec aux coord direction board acc = 
+                    match isAvilablie (findAdjecent coord direction) board with
+                    | true when acc < 7 -> aux (Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)) direction board (acc + 1)
+                    | true -> acc
+                    | false -> acc
+                aux coord direction board 0
+
+            
+            let startSubString (coord:coord) (direction:coord) 
+
+
+            let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
+                let list = Map.toList board.tiles
+                match list with 
+                | x::xs -> findLengthFromStarter (fst x) (Coord.mkCoordinate(1,0)) board
+                | [] -> 
+
+
+
+                board.tiles |> Map.toList |> List.fold (fun key -> 
 
 
 
@@ -178,8 +197,8 @@ module Scrabble =
 
                 //none betyder ingen vej videre - ret acc
 
-            (*let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
-                board.tiles |> Map.iter (fun key value -> uintToChar value)*)
+            
+           
             (*
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
                 let chars = 
