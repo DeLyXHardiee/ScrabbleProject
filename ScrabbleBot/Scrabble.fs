@@ -108,6 +108,12 @@ module Scrabble =
                 ) "" hand
             let validWord = findValidWord st.hand st.dict (0,0) ("")
             
+            let findStartersNew (board: board) =
+                board.tiles.Count
+            
+            let convertFromIntToString = string (findStartersNew st.board)
+            
+            forcePrint convertFromIntToString
             
             forcePrint validWord
             forcePrint "validWord\n"
@@ -125,6 +131,23 @@ module Scrabble =
                         let move = (newPos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
                         moveHelper newPos dir xs (move :: moves)
                 moveHelper startPos direction (Seq.toList(word)) []
+
+            let findAdjecent (coord: coord) (direction: coord) =
+                let next = Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)
+                if Coord.getX direction = 1 then [((Coord.getX next, ((Coord.getY next) - 1))); (Coord.getX next, (Coord.getY next) + 1); ((Coord.getX next) + 1, Coord.getY next)]
+                else [((Coord.getX next) - 1, (Coord.getY next)); ((Coord.getX next) + 1, Coord.getY next); ((Coord.getX next), (Coord.getY next) + 1)]
+            
+            
+    
+
+            let findLengthFromStarter (coord:coord) (direction:coord) (board:board) = 
+                match direction with
+                | (0,1) -> if Map.tryFind board.tiles then
+
+            // Hvis (0,1) -> y er faldende
+            // Næste koordinat er next = coord(x,y-1)
+            // Tre nærliggende til næste koordinat er 
+            // coord(next.x-1,next.y), coord(next.x+1,next.y), coord(next.x,next.y+1)
 
             //forcePrint moves
             //(move:list<(int * int) * (uint32 * (char * int))>)
