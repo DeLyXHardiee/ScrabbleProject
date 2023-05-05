@@ -102,9 +102,9 @@ module Scrabble =
                 ) "" hand
 
             let makeMove (startPos:coord) (direction:coord) (word:string)  = 
-                let rec moveHelper (pos:coord) dir remainingWord (moves:list<coord * (uint32 * (char * int))>) =
+                let rec moveHelper (pos:coord) direction remainingWord (moves:list<coord * (uint32 * (char * int))>) =
                     let newPos:coord =
-                        if Coord.getX dir = 1 then
+                        if Coord.getX direction = 1 then
                             Coord.mkCoordinate (Coord.getX pos + 1) (Coord.getY pos)
                         else
                             Coord.mkCoordinate (Coord.getX pos) (Coord.getY pos + 1)
@@ -112,7 +112,7 @@ module Scrabble =
                     | [] -> moves
                     | w::xs -> 
                         let move = (pos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
-                        moveHelper newPos dir xs (move :: moves)
+                        moveHelper newPos direction xs (move :: moves)
                 moveHelper startPos direction (Seq.toList(word)) []
 
             let findAdjacent (coord: coord) (direction: coord) =
@@ -137,40 +137,70 @@ module Scrabble =
                     | false -> acc
                 aux coord direction board 0
 
-            
-            let startSubString (coord : coord)(direction : coord) (board : board) =
-                let tiles = board.tiles
-                let rec aux coord direction (tiles : Map<coord,uint32>) acc = 
+
+            let rec successor (coord:coord) (direction:coord) (tiles : Map<coord,uint32>) = 
+                let rec aux coord direction tiles acc =
                     let nextCoord = (Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction))
                     match Map.tryFind nextCoord tiles with
                     | Some x -> aux nextCoord direction tiles (acc + (string (uintToChar x)))
-                    | None -> acc
+                    | None -> (acc,coord)
                 aux coord direction tiles (string (uintToChar (Map.find (coord) tiles)))
+            
+            let rec predecessor coord direction tiles =
+                let rec aux coord direction tiles acc =
+                    let prevCoord = (Coord.mkCoordinate(Coord.getX coord - Coord.getX direction) (Coord.getY coord - Coord.getY direction))
+                    match Map.tryFind prevCoord tiles with
+                    | Some x -> aux prevCoord direction tiles ((string (uintToChar x) + acc))
+                    | None -> acc
+                aux coord direction tiles ""
+            
+            let startSubString (coord : coord)(direction : coord) (board : board) =
+                let tiles = board.tiles
+                let beginSubString = predecessor coord direction tiles
+                let endSubString = successor coord direction tiles
+                ((beginSubString + fst endSubString), snd endSubString)
 
+            let findValidMoveHelper hand dict placedPieces board  direction  =
+                let rec aux hand placedPieces dict direction=
+                    match placedPieces with 
+                    | x::xs -> 
+                        let subStringAndLastCoord = startSubString (fst x) direction board
+                        let subString = fst subStringAndLastCoord
+                        printf "looking at coordinate: %i, %i \n" (fst (fst x)) (snd (fst x))
+                        printf "sub string: %s \n" subString
+                        let dictionaryDepth = stepIntoWord subString dict
+                        let lastCoordInSubString = snd subStringAndLastCoord
+                        printf "last coordinate: %i, %i \n" (fst lastCoordInSubString) (snd lastCoordInSubString)
+                        let lengthFromStarter = findLengthFromStarter lastCoordInSubString direction board
+                        printf "length from starter: %i \n" lengthFromStarter
+                        let word = findValidWord hand dictionaryDepth lengthFromStarter subString
+                        printf "our valid word! %s \n" word
+                        let wordWithoutAlreadyPlaced = word[subString.Length .. word.Length]
+                        printf "word: %s \n" wordWithoutAlreadyPlaced
+                        if (word.Length < 1 || Dictionary.lookup word dict) then 
+                            let move = makeMove (Coord.mkCoordinate (Coord.getX lastCoordInSubString + Coord.getX direction) (Coord.getY lastCoordInSubString + Coord.getY direction)) direction wordWithoutAlreadyPlaced
+                            if move.IsEmpty then aux hand xs dict direction
+                            else move
+                        else aux hand xs dict direction
+                    | [] -> list.Empty
+                aux hand placedPieces dict direction
 
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
                 let list = Map.toList board.tiles
-                if list.IsEmpty then makeMove (-1, 0) (1, 0) (findValidWord st.hand st.dict 7 "")
+                let directionDown = (Coord.mkCoordinate 0 1)
+                let directionRight =  (Coord.mkCoordinate 1 0) 
+                if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "")
                 else
-                    let rec aux hand placedPieces dict =
-                        match placedPieces with 
-                        | x::xs -> 
-                            let subString = startSubString (fst x) (Coord.mkCoordinate 0 1) board
-                            printf "sub string: %s \n" subString
-                            let dictionaryDepth = stepIntoWord subString dict
-                            let lastCoordInSubString = Coord.mkCoordinate((fst (fst x))) (snd (fst x) + (1 * subString.Length))
-                            printf "last coordinate: %i, %i \n" (fst lastCoordInSubString) (snd lastCoordInSubString)
-                            let lengthFromStarter = findLengthFromStarter lastCoordInSubString (Coord.mkCoordinate 0 1) board
-                            printf "length from starter: %i \n" lengthFromStarter
-                            let word = findValidWord hand dictionaryDepth lengthFromStarter subString
-                            printf "our valid word! %s \n" word
-                            let wordWithoutAlreadyPlaced = word[subString.Length .. word.Length]
-                            printf "word: %s \n" wordWithoutAlreadyPlaced
-                            let move = makeMove lastCoordInSubString (Coord.mkCoordinate 0 1) wordWithoutAlreadyPlaced
-                            if move.IsEmpty then aux hand xs dict
-                            else move
-                        | [] -> failwith "No valid move, change pieces!"
-                    aux hand list dict
+                    let findValidMoveRight = findValidMoveHelper hand dict list board directionRight 
+                    printf "found right"
+                    let findValidMoveDown = findValidMoveHelper hand dict list board directionDown
+                    printf "found down"
+                    if findValidMoveRight.IsEmpty && findValidMoveDown.IsEmpty then List.empty //no possible move, switch pieces
+                    elif findValidMoveRight.IsEmpty then findValidMoveDown
+                    elif findValidMoveDown.IsEmpty then findValidMoveRight
+                    elif findValidMoveRight.Length > findValidMoveDown.Length then findValidMoveRight
+                    else findValidMoveDown
+                    
 
             (* let rec aux hand placedPieces dict =
                         match placedPieces with 
@@ -188,7 +218,8 @@ module Scrabble =
             let move = findValidMove st.hand st.board st.dict 
             forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
-            send cstream (SMPlay move)
+            if move.IsEmpty then send cstream SMChange
+            else send cstream (SMPlay move)
 
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
@@ -218,7 +249,7 @@ module Scrabble =
             let updateState board dict playerNumber hand =
                 State.mkState board dict playerNumber hand
 
-            printf "response: %s" (string msg)
+            printf "response: %s\n" (string msg)
 
             match msg with
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
