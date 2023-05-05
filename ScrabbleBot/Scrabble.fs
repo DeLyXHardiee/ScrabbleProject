@@ -192,9 +192,9 @@ module Scrabble =
                 if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "")
                 else
                     let findValidMoveRight = findValidMoveHelper hand dict list board directionRight 
-                    printf "found right"
+                    printf "found right\n"
                     let findValidMoveDown = findValidMoveHelper hand dict list board directionDown
-                    printf "found down"
+                    printf "found down\n"
                     if findValidMoveRight.IsEmpty && findValidMoveDown.IsEmpty then List.empty //no possible move, switch pieces
                     elif findValidMoveRight.IsEmpty then findValidMoveDown
                     elif findValidMoveDown.IsEmpty then findValidMoveRight
@@ -216,8 +216,9 @@ module Scrabble =
                         | [] -> failwith "No valid move, change pieces!" *)
 
             let move = findValidMove st.hand st.board st.dict 
-            forcePrint (string move)
+            //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
+            if move.IsEmpty then forcePrint "changing pieces\n"
             if move.IsEmpty then send cstream SMChange
             else send cstream (SMPlay move)
 
@@ -252,6 +253,10 @@ module Scrabble =
             printf "response: %s\n" (string msg)
 
             match msg with
+            | RCM (CMChangeSuccess(newPieces)) ->
+                let handAddedNewPieces = addNewPiecesToHand newPieces st.hand
+                let st' = updateState st.board st.dict st.playerNumber handAddedNewPieces
+                aux st'
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
@@ -259,11 +264,11 @@ module Scrabble =
                 let handAddedNewPieces = addNewPiecesToHand newPieces handRemovedUsedPieces
                 (* Successful play by you. Update your state (remove old tiles, add the new ones, change turn, etc) *)
                 let st' = updateState newBoard st.dict st.playerNumber handAddedNewPieces
-                printf "making a new move!"
+                printf "making a new move!\n"
                 aux st'
             | RCM (CMPlayed (pid, ms, points)) ->
                 (* Successful play by other player. Update your state *)
-                printf "move was made!"
+                printf "move was made!\n"
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
@@ -274,7 +279,7 @@ module Scrabble =
                 let st' = st // This state needs to be updated
                 aux st'
             | RCM (CMGameOver _) -> ()
-            | RCM a -> failwith (sprintf "not implmented: %A" a)
+            | RCM a -> aux st
             | RGPE err -> printfn "Gameplay Error:\n%A" err; aux st
 
 
