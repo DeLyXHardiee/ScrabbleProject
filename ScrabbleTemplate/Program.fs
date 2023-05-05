@@ -45,8 +45,8 @@ let main argv =
 
     let dictAPI =
         // Uncomment if you have implemented a dictionary. last element None if you have not implemented a GADDAG
-        // Some (Dict.empty, Dict.insert, Dict.step, None) 
-        None
+        Some (Dict.empty, Dict.insert, Dict.step, None) 
+        // None
         
     // Uncomment this line to call your client
 

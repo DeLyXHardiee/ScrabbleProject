@@ -67,7 +67,6 @@ module Scrabble =
             // remove the force print when you move on from manual input (or when you have learnt the format)
             
             forcePrint "Input move (format '(<x-coordinate> <y-coordinate> <piece id><character><point-value> )*', note the absence of space between the last inputs)\n\n"            
-            forcePrint "lul\n\n"
 
             let convertToPoints (value:uint32) (pieces:Map<uint32, tile>) : int = 
                 let points = match Map.tryFind value pieces with
@@ -78,45 +77,29 @@ module Scrabble =
 
             let uintToChar id = char(id + 64u)
             let charToUint c = uint32(c)-64u
-            let myhand = MultiSet.empty
-            let handWithTiles = MultiSet.add 1u 1u myhand
-            let handWithTiles = MultiSet.add 16u 1u handWithTiles
-            let handWithTiles = MultiSet.add 5u 1u handWithTiles
-            let handWithTiles = MultiSet.add 19u 1u handWithTiles
             
             // Call when you have found starter and propegate dictionary into findValidWord
-            let rec stepIntoWord (word:string) (dict:Dictionary.Dict) : Dictionary.Dict =
+            let stepIntoWord (word:string) (dict:Dictionary.Dict) : Dictionary.Dict =
                 let characters = Seq.toList word
                 let rec aux (c:char) (startDict:Dictionary.Dict)= 
                     match Dictionary.step c startDict with
                     | Some (_,subDict: Dictionary.Dict) -> aux c subDict 
-                    | None -> failwith "shouldnt happen"
+                    | None -> startDict
                 List.fold (fun d c -> aux c d) dict characters
                     
-            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (startPos:coord) (localAcc:string) : string =
+            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (maxLength : int) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
                     match Dictionary.step (uintToChar letter) dict with 
                     | Some (endOfWord, subDict) ->
                         let sLetter = (uintToChar letter)
                         let currentString = localAcc + (string) sLetter
                         let newHand = MultiSet.removeSingle letter hand
-                        let branch = findValidWord newHand subDict startPos currentString
-                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length then currentString
-                        elif branch.Length > acc.Length then branch
+                        let branch = findValidWord newHand subDict maxLength currentString
+                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length && currentString.Length < maxLength then currentString
+                        elif branch.Length > acc.Length && branch.Length < maxLength then branch
                         else acc 
                     | None -> acc
                 ) "" hand
-            let validWord = findValidWord st.hand st.dict (0,0) ("")
-            
-            let findStartersNew (board: board) =
-                board.tiles.Count
-            
-            let convertFromIntToString = string (findStartersNew st.board)
-            
-            forcePrint convertFromIntToString
-            
-            forcePrint validWord
-            forcePrint "validWord\n"
 
             let makeMove (startPos:coord) (direction:coord) (word:string)  = 
                 let rec moveHelper (pos:coord) dir remainingWord (moves:list<coord * (uint32 * (char * int))>) =
@@ -128,59 +111,81 @@ module Scrabble =
                     match remainingWord with
                     | [] -> moves
                     | w::xs -> 
-                        let move = (newPos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
+                        let move = (pos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
                         moveHelper newPos dir xs (move :: moves)
                 moveHelper startPos direction (Seq.toList(word)) []
 
-            let findAdjecent (coord: coord) (direction: coord) =
+            let findAdjacent (coord: coord) (direction: coord) =
                 let next = Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)
                 if Coord.getX direction = 1 then [((Coord.getX next, ((Coord.getY next) - 1))); (Coord.getX next, (Coord.getY next) + 1); ((Coord.getX next) + 1, Coord.getY next)]
                 else [((Coord.getX next) - 1, (Coord.getY next)); ((Coord.getX next) + 1, Coord.getY next); ((Coord.getX next), (Coord.getY next) + 1)]
 
 
-            let rec isAvilablie (coords: coord List) (board: board) =
+            let rec isAvailable (coords: coord List) (board: board) =
                 match coords with 
                 | x::xs -> match Map.tryFind x board.tiles with 
                             | Some _ -> false
-                            | None -> isAvilablie xs board
+                            | None -> isAvailable xs board
                 | [] -> true
 
 
             let findLengthFromStarter (coord:coord) (direction:coord) (board:board) = 
                 let rec aux coord direction board acc = 
-                    match isAvilablie (findAdjecent coord direction) board with
+                    match isAvailable (findAdjacent coord direction) board with
                     | true when acc < 7 -> aux (Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)) direction board (acc + 1)
                     | true -> acc
                     | false -> acc
                 aux coord direction board 0
 
             
-            let startSubString (coord:coord) (direction:coord) 
+            let startSubString (coord : coord)(direction : coord) (board : board) =
+                let tiles = board.tiles
+                let rec aux coord direction (tiles : Map<coord,uint32>) acc = 
+                    let nextCoord = (Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction))
+                    match Map.tryFind nextCoord tiles with
+                    | Some x -> aux nextCoord direction tiles (acc + (string (uintToChar x)))
+                    | None -> acc
+                aux coord direction tiles (string (uintToChar (Map.find (coord) tiles)))
 
 
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
                 let list = Map.toList board.tiles
-                match list with 
-                | x::xs -> findLengthFromStarter (fst x) (Coord.mkCoordinate(1,0)) board
-                | [] -> 
+                if list.IsEmpty then makeMove (-1, 0) (1, 0) (findValidWord st.hand st.dict 7 "")
+                else
+                    let rec aux hand placedPieces dict =
+                        match placedPieces with 
+                        | x::xs -> 
+                            let subString = startSubString (fst x) (Coord.mkCoordinate 0 1) board
+                            printf "sub string: %s \n" subString
+                            let dictionaryDepth = stepIntoWord subString dict
+                            let lastCoordInSubString = Coord.mkCoordinate((fst (fst x))) (snd (fst x) + (1 * subString.Length))
+                            printf "last coordinate: %i, %i \n" (fst lastCoordInSubString) (snd lastCoordInSubString)
+                            let lengthFromStarter = findLengthFromStarter lastCoordInSubString (Coord.mkCoordinate 0 1) board
+                            printf "length from starter: %i \n" lengthFromStarter
+                            let word = findValidWord hand dictionaryDepth lengthFromStarter subString
+                            printf "our valid word! %s \n" word
+                            let wordWithoutAlreadyPlaced = word[subString.Length .. word.Length]
+                            printf "word: %s \n" wordWithoutAlreadyPlaced
+                            let move = makeMove lastCoordInSubString (Coord.mkCoordinate 0 1) wordWithoutAlreadyPlaced
+                            if move.IsEmpty then aux hand xs dict
+                            else move
+                        | [] -> failwith "No valid move, change pieces!"
+                    aux hand list dict
 
+            (* let rec aux hand placedPieces dict =
+                        match placedPieces with 
+                        | x::xs -> 
+                            let subString = startSubString (fst x) (Coord.mkCoordinate 1 0) board
+                            let dictionaryDepth = stepIntoWord subString dict
+                            let lastCoordInSubString = Coord.mkCoordinate((fst (fst x)) + (1 * subString.Length)) (snd (fst x))
+                            let lengthFromStarter = findLengthFromStarter lastCoordInSubString (Coord.mkCoordinate 1 0) board
+                            let word = findValidWord hand dictionaryDepth lengthFromStarter subString
+                            let move = makeMove (Coord.mkCoordinate(fst (lastCoordInSubString) + 1) (snd lastCoordInSubString)) (Coord.mkCoordinate 1 0) word
+                            if move.IsEmpty then aux hand xs dict
+                            else move
+                        | [] -> failwith "No valid move, change pieces!" *)
 
-
-                board.tiles |> Map.toList |> List.fold (fun key -> 
-
-
-
-            //forcePrint moves
-            //(move:list<(int * int) * (uint32 * (char * int))>)
-            //list<(int * int) * (uint32 * (char * int))>
-
-            //let findStarters() = 
-            //stepIntoWord
-            // findValidWord (stepIntoWord dict)
-            // makeMove starter            
-
-            //let move = RegEx.parseMove input
-            let move = makeMove (-1, 0) (1, 0) (findValidWord st.hand st.dict (0,0) "") 
+            let move = findValidMove st.hand st.board st.dict 
             forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             send cstream (SMPlay move)
@@ -188,28 +193,12 @@ module Scrabble =
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
                 
-
-            
                 // step på bogstav
                 //match some = en vej videre med bogstav
 
                 // kald findvalidword rekursivt uden det brugte bogstav
 
                 //none betyder ingen vej videre - ret acc
-
-            
-           
-            (*
-            let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
-                let chars = 
-                    board.tiles 
-                    |> Seq.collect (fun (key, value) -> convertToChar value pieces)
-                    |> List.ofSeq
-                chars
-                //board.tiles |> Map.iter (fun key value -> convertToChar value pieces)
-           *)
-      
-            
 
             let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
                 match ms with
@@ -229,6 +218,8 @@ module Scrabble =
             let updateState board dict playerNumber hand =
                 State.mkState board dict playerNumber hand
 
+            printf "response: %s" (string msg)
+
             match msg with
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
                 let newTiles = updateTiles ms st.board.tiles
@@ -237,15 +228,16 @@ module Scrabble =
                 let handAddedNewPieces = addNewPiecesToHand newPieces handRemovedUsedPieces
                 (* Successful play by you. Update your state (remove old tiles, add the new ones, change turn, etc) *)
                 let st' = updateState newBoard st.dict st.playerNumber handAddedNewPieces
+                printf "making a new move!"
                 aux st'
             | RCM (CMPlayed (pid, ms, points)) ->
                 (* Successful play by other player. Update your state *)
+                printf "move was made!"
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
                 //let validmoves = findValidMove st.board (MultiSet.toList st.hand) st.dict
                 aux st'
-                
             | RCM (CMPlayFailed (pid, ms)) ->
                 (* Failed play. Update your state *)
                 let st' = st // This state needs to be updated
