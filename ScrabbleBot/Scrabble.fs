@@ -219,7 +219,7 @@ module Scrabble =
             //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             if move.IsEmpty then forcePrint "changing pieces\n"
-            if move.IsEmpty then send cstream SMChange
+            if move.IsEmpty then send cstream (SMChange (MultiSet.toList st.hand))
             else send cstream (SMPlay move)
 
             let msg = recv cstream
@@ -242,6 +242,10 @@ module Scrabble =
                 | [] -> hand
                 | x::xs -> addNewPiecesToHand xs (MultiSet.add (fst x) (snd x) hand)
 
+            let changePiecesInHand (newPieces : (uint32 * uint32) list) =
+                let emptyHand = MultiSet.empty
+                addNewPiecesToHand newPieces emptyHand
+
             let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, uint32>) = 
                 match ms with
                 | [] -> tiles
@@ -254,8 +258,11 @@ module Scrabble =
 
             match msg with
             | RCM (CMChangeSuccess(newPieces)) ->
-                let handAddedNewPieces = addNewPiecesToHand newPieces st.hand
-                let st' = updateState st.board st.dict st.playerNumber handAddedNewPieces
+                printf "Changing to new pieces! \n"
+                printf "Old hand: %s \n" (string st.hand) 
+                let handChangedToNewPieces = changePiecesInHand newPieces
+                let st' = updateState st.board st.dict st.playerNumber handChangedToNewPieces
+                printf "New hand: %s \n" (string st'.hand)
                 aux st'
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
                 let newTiles = updateTiles ms st.board.tiles
