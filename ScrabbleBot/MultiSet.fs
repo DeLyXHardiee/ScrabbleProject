@@ -10,8 +10,17 @@ module internal MultiSet
         match Map.tryFind a s with
             | Some value -> value
             | None -> 0u
-    let add a n (MultiSet s) = MultiSet (Map.add a n s)
-    let addSingle a (MultiSet s) = MultiSet (Map.add a 1u s)
+
+    let add a' (b:uint32) (MultiSet m) = 
+        let ms = 
+            match (Map.tryFind a' m) with
+            | Some x-> Map.add a' (x+b) m 
+            | None -> Map.add a' b m 
+        (MultiSet ms)
+
+    let addSingle a' (MultiSet m) = add a' 1u (MultiSet m)
+    //let add a n (MultiSet s) = MultiSet (Map.add a n s)
+    //let addSingle a (MultiSet s) = MultiSet (Map.add a 1u s)
     let remove a n (MultiSet s) = 
         if Map.find a s <= n then
             MultiSet (Map.remove a s)

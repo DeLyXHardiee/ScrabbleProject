@@ -219,18 +219,16 @@ module Scrabble =
             //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             if move.IsEmpty then forcePrint "changing pieces\n"
-            if move.IsEmpty then send cstream (SMChange (MultiSet.toList st.hand))
+            if move.IsEmpty then 
+                let list = MultiSet.toList (st.hand)
+                forcePrint ("hand size when changing pieces: ")
+                forcePrint ((string list.Length)+ "\n")
+                send cstream (SMChange (MultiSet.toList st.hand))
             else send cstream (SMPlay move)
 
             let msg = recv cstream
             debugPrint (sprintf "Player %d <- Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
                 
-                // step på bogstav
-                //match some = en vej videre med bogstav
-
-                // kald findvalidword rekursivt uden det brugte bogstav
-
-                //none betyder ingen vej videre - ret acc
 
             let rec removeUsedPiecesFromHand (ms : ((ScrabbleUtil.coord * (uint32 * (char * int))) list)) hand =
                 match ms with
@@ -265,13 +263,20 @@ module Scrabble =
                 printf "New hand: %s \n" (string st'.hand)
                 aux st'
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
+                printf "Hand: %s \n" (string st.hand) 
+                forcePrint ("pieces played: " + (string (ms.Length) + "\n"))
+                forcePrint ("new pieces size: " + (string ((newPieces.Length))) + "\n")
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let handRemovedUsedPieces = removeUsedPiecesFromHand ms st.hand
                 let handAddedNewPieces = addNewPiecesToHand newPieces handRemovedUsedPieces
                 (* Successful play by you. Update your state (remove old tiles, add the new ones, change turn, etc) *)
                 let st' = updateState newBoard st.dict st.playerNumber handAddedNewPieces
+                forcePrint ("pieces played: " + (string (ms.Length) + "\n"))
+                forcePrint ("handsize after removing played pieces: " + (string (MultiSet.size(handRemovedUsedPieces))) + "\n")
+
                 printf "making a new move!\n"
+                printf "hand size after play: %s \n" (string (MultiSet.size st'.hand))
                 aux st'
             | RCM (CMPlayed (pid, ms, points)) ->
                 (* Successful play by other player. Update your state *)
