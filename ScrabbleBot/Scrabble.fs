@@ -166,17 +166,17 @@ module Scrabble =
                     | x::xs -> 
                         let subStringAndLastCoord = startSubString (fst x) direction board
                         let subString = fst subStringAndLastCoord
-                        printf "looking at coordinate: %i, %i \n" (fst (fst x)) (snd (fst x))
-                        printf "sub string: %s \n" subString
+                        // printf "looking at coordinate: %i, %i \n" (fst (fst x)) (snd (fst x))
+                        // printf "sub string: %s \n" subString
                         let dictionaryDepth = stepIntoWord subString dict
                         let lastCoordInSubString = snd subStringAndLastCoord
-                        printf "last coordinate: %i, %i \n" (fst lastCoordInSubString) (snd lastCoordInSubString)
+                        // printf "last coordinate: %i, %i \n" (fst lastCoordInSubString) (snd lastCoordInSubString)
                         let lengthFromStarter = findLengthFromStarter lastCoordInSubString direction board
-                        printf "length from starter: %i \n" lengthFromStarter
+                        // printf "length from starter: %i \n" lengthFromStarter
                         let word = findValidWord hand dictionaryDepth lengthFromStarter subString
                         printf "our valid word! %s \n" word
                         let wordWithoutAlreadyPlaced = word[subString.Length .. word.Length]
-                        printf "word: %s \n" wordWithoutAlreadyPlaced
+                        // printf "word: %s \n" wordWithoutAlreadyPlaced
                         if (word.Length < 1 || Dictionary.lookup word dict) then 
                             let move = makeMove (Coord.mkCoordinate (Coord.getX lastCoordInSubString + Coord.getX direction) (Coord.getY lastCoordInSubString + Coord.getY direction)) direction wordWithoutAlreadyPlaced
                             if move.IsEmpty then aux hand xs dict direction
@@ -292,8 +292,10 @@ module Scrabble =
                 aux st'
             | RCM (CMGameOver _) -> ()
             | RCM a -> aux st
-            | RGPE err -> printfn "Gameplay Error:\n%A" err; aux st
-
+            | RGPE err -> 
+                printfn "Gameplay Error:\n%A" err; 
+                send cstream (SMPass)
+                aux st
 
         aux st
 
