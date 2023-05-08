@@ -54,11 +54,3 @@ module Dict
                 match value with
                 | Node(children, endOfWord) -> Some(endOfWord, value)
             | None -> None
-
-    let rec mkDict<'a> (words : seq<string>) (dictAPI : 'a dictAPI option) =
-        let emptyDict = dictAPI |> Option.map (fun (emptyAPI, insertAPI, stepAPI, reverse) -> empty())
-        match emptyDict with
-        | None -> failwith "Invalid Dictionary API"
-        | Some emptyDict -> 
-            Seq.fold(fun acc word -> insert word acc) emptyDict words
-            |>  fun d -> fun success -> if success then d else empty ()

@@ -8,11 +8,6 @@ module Dict
         (char -> 'a -> (bool * 'a) option) * // step
         ('a -> (bool * 'a) option) option // reverse
 
-    val mkDict<'a> :
-        string seq -> // word list (your dictionary)
-        ('a dictAPI option) ->
-        (bool -> Dictionary)
-
     val empty : unit -> Dictionary
     val insert : string -> Dictionary -> Dictionary
     val lookup : string -> Dictionary -> bool

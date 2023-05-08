@@ -90,28 +90,52 @@ module Scrabble =
                     | [] -> startDict
                 aux characters dict
                     
-            let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (maxLength : int) (localAcc:string) : string =
-                MultiSet.fold (fun acc letter count -> 
-                    let newHand = MultiSet.removeSingle letter hand
-                    let letter = 
-                        match letter with
-                        | 0u -> 5u
-                        | _ -> letter
-                    match Dictionary.step (uintToChar letter) dict with 
-                    | Some (endOfWord, subDict) ->
-                        let currentString = localAcc + (string (uintToChar letter))
-                        let branch = findValidWord newHand subDict maxLength currentString
-                        (*let longestWordSoFar = match endOfWord with
-                                                | true -> currentString*)
-                        //if endOfWord then currentString
-                        //printf "currentString: %s\n" currentString
-                        //printf "branch: %s\n" branch
-                        //printf "acc: %s\n" acc
-                        if endOfWord && currentString.Length >= branch.Length && currentString.Length >= acc.Length && currentString.Length <= maxLength then currentString
-                        elif branch.Length > acc.Length && branch.Length < maxLength then branch
-                        else acc 
-                    | None -> acc
-                ) "" hand
+            let findValidWord (hand:MultiSet.MultiSet<uint32>) (startDict:Dictionary.Dict) (maxLength : int) (startString:string) : string =
+                let rec aux (hand:MultiSet.MultiSet<uint32>) (auxDict:Dictionary.Dict) (maxLength : int) (currentString:string) : string = 
+                    if currentString.Length > (startString.Length + maxLength) then ""
+                    else
+                    MultiSet.fold (fun acc letter count -> 
+                        let newHand = MultiSet.removeSingle letter hand
+                        let letter = 
+                            match letter with
+                            | 0u -> 5u
+                            | _ -> letter
+                        match Dictionary.step (uintToChar letter) auxDict with 
+                        | Some (endOfWord, subDict) ->
+                            let newString = currentString + (string (uintToChar letter))
+                            let branch = aux newHand subDict maxLength newString
+                            if endOfWord && newString.Length >= branch.Length && newString.Length >= acc.Length && newString.Length <= (startString.Length + maxLength) &&  (Dictionary.lookup newString st.dict) then
+                                //printf "endOfWord: %b \n" endOfWord
+                                //printf "startString: %s \n " startString
+                                //printf "currentString: %s \n " currentString
+                                newString
+                            elif branch.Length > acc.Length && branch.Length < (startString.Length + maxLength) && (Dictionary.lookup branch st.dict) then 
+                                //printf "branch: %s \n " branch
+                                branch
+                            elif (Dictionary.lookup acc st.dict) then 
+                                //printf "acc: %s \n " acc
+                                acc 
+                            else ""
+                        | None -> acc
+                    ) startString hand
+                aux hand startDict maxLength startString
+
+
+            (*let findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (maxLength:int) =
+                let hand = MultiSet.toList hand
+                let rec aux (hand:uint32 list) (dict:Dictionary.Dict) (maxLength:int) (acc:string) =
+                    List.fold (fun acc letter ->  
+                        match Dictionary.step (uintToChar letter) dict with
+                        | Some (endOfWord,subdict) when endOfWord = true -> acc + (string (uintToChar letter))
+                        | Some (endOfWord,subdict) -> 
+                            let newHand = 
+                                match hand with 
+                                | x::xs -> xs
+                                | [] -> List.empty  
+                            aux newHand subdict maxLength (acc + (string (uintToChar letter)))
+                        | None -> ""
+                    ) acc hand
+                aux hand dict maxLength ""*)
 
             let makeMove (startPos:coord) (direction:coord) (word:string) (hand:MultiSet.MultiSet<uint32>) = 
                 let rec moveHelper (pos:coord) direction remainingWord (moves:list<coord * (uint32 * (char * int))>) (hand:MultiSet.MultiSet<uint32>) =
@@ -225,11 +249,9 @@ module Scrabble =
                 if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "") hand
                 else
                     let findValidMoveRight = findValidMoveHelper hand dict list board directionRight 
-                    //if findValidMoveRight.IsEmpty then
-                      //  let findValidMoveRight = findValidMoveHelper hand dict list board directionRight
-                    printf "found right\n"
+                    //printf "found right\n"
                     let findValidMoveDown = findValidMoveHelper hand dict list board directionDown
-                    printf "found down\n"
+                    //printf "found down\n"
                     if findValidMoveRight.IsEmpty && findValidMoveDown.IsEmpty then List.empty //no possible move, switch pieces
                     elif findValidMoveRight.IsEmpty then findValidMoveDown
                     elif findValidMoveDown.IsEmpty then findValidMoveRight
