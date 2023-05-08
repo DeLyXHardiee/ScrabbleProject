@@ -81,11 +81,14 @@ module Scrabble =
             // Call when you have found starter and propegate dictionary into findValidWord
             let stepIntoWord (word:string) (dict:Dictionary.Dict) : Dictionary.Dict =
                 let characters = Seq.toList word
-                let rec aux (c:char) (startDict:Dictionary.Dict)= 
-                    match Dictionary.step c startDict with
-                    | Some (_,subDict: Dictionary.Dict) -> aux c subDict 
-                    | None -> startDict
-                List.fold (fun d c -> aux c d) dict characters
+                let rec aux (c:char list) (startDict:Dictionary.Dict)=
+                    match characters with
+                    | x::xs ->  
+                        match Dictionary.step x startDict with
+                        | Some (_,subDict: Dictionary.Dict) -> aux xs subDict 
+                        | None -> startDict
+                    | [] -> startDict
+                aux characters dict
                     
             let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (maxLength : int) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
@@ -96,10 +99,15 @@ module Scrabble =
                         | _ -> letter
                     match Dictionary.step (uintToChar letter) dict with 
                     | Some (endOfWord, subDict) ->
-                        let sLetter = (uintToChar letter)
-                        let currentString = localAcc + (string) sLetter
+                        let currentString = localAcc + (string (uintToChar letter))
                         let branch = findValidWord newHand subDict maxLength currentString
-                        if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length && currentString.Length < maxLength then currentString
+                        (*let longestWordSoFar = match endOfWord with
+                                                | true -> currentString*)
+                        //if endOfWord then currentString
+                        //printf "currentString: %s\n" currentString
+                        //printf "branch: %s\n" branch
+                        //printf "acc: %s\n" acc
+                        if endOfWord && currentString.Length >= branch.Length && currentString.Length >= acc.Length && currentString.Length <= maxLength then currentString
                         elif branch.Length > acc.Length && branch.Length < maxLength then branch
                         else acc 
                     | None -> acc
@@ -128,12 +136,13 @@ module Scrabble =
                         moveHelper newPos direction xs (move :: moves) newHand
                 moveHelper startPos direction (Seq.toList(word)) [] hand
 
+            //helper function to find nearby letters that may interfere with the move
             let findAdjacent (coord: coord) (direction: coord) =
                 let next = Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)
                 if Coord.getX direction = 1 then [((Coord.getX next, ((Coord.getY next) - 1))); (Coord.getX next, (Coord.getY next) + 1); ((Coord.getX next) + 1, Coord.getY next)]
                 else [((Coord.getX next) - 1, (Coord.getY next)); ((Coord.getX next) + 1, Coord.getY next); ((Coord.getX next), (Coord.getY next) + 1)]
 
-
+            //helper function used in combination with findadjacent
             let rec isAvailable (coords: coord List) (board: board) =
                 match coords with 
                 | x::xs -> match Map.tryFind x board.tiles with 
@@ -141,7 +150,7 @@ module Scrabble =
                             | None -> isAvailable xs board
                 | [] -> true
 
-
+            //helper function to find out how many characters we can place after some anchorpoint on the board without collision
             let findLengthFromStarter (coord:coord) (direction:coord) (board:board) = 
                 let rec aux coord direction board acc = 
                     match isAvailable (findAdjacent coord direction) board with
@@ -150,7 +159,7 @@ module Scrabble =
                     | false -> acc
                 aux coord direction board 0
 
-
+            //helper function to find the suffix of the anchor point. Includes the character at the anchor point
             let rec successor (coord:coord) (direction:coord) (tiles : Map<coord,uint32>) = 
                 let rec aux coord direction tiles acc =
                     let nextCoord = (Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction))
@@ -159,6 +168,7 @@ module Scrabble =
                     | None -> (acc,coord)
                 aux coord direction tiles (string (uintToChar (Map.find (coord) tiles)))
             
+            //helper function to find the prefix of the anchor point
             let rec predecessor coord direction tiles =
                 let rec aux coord direction tiles acc =
                     let prevCoord = (Coord.mkCoordinate(Coord.getX coord - Coord.getX direction) (Coord.getY coord - Coord.getY direction))
@@ -166,14 +176,23 @@ module Scrabble =
                     | Some x -> aux prevCoord direction tiles ((string (uintToChar x) + acc))
                     | None -> acc
                 aux coord direction tiles ""
-            
+
+            //helper function to find the string from some anchor point that we will be progressing from. Is often just the anchor point, i.e. some character placed on the board.
+            //also returns the last coordinate of the placement of the string, which is where we will continue building from.
             let startSubString (coord : coord)(direction : coord) (board : board) =
                 let tiles = board.tiles
                 let beginSubString = predecessor coord direction tiles
                 let endSubString = successor coord direction tiles
                 ((beginSubString + fst endSubString), snd endSubString)
 
+
+            //helper function to finding valid moves. We match all pieces placed on the board, and use each anchor point to find a valid move.
+            //as soon as a valid move is found from some anchor point, we use it.
             let findValidMoveHelper hand dict placedPieces board  direction  =
+                let shuffleList (list: 'T list) : 'T list =
+                    let rand = System.Random()
+                    List.sortBy (fun _ -> rand.Next()) list
+                let placedPieces = shuffleList placedPieces
                 let rec aux hand placedPieces dict direction=
                     match placedPieces with 
                     | x::xs -> 
@@ -197,7 +216,8 @@ module Scrabble =
                         else aux hand xs dict direction
                     | [] -> list.Empty
                 aux hand placedPieces dict direction
-
+    
+            //finds some valid move by using findValidMoveHelper. If no move has been made yet, place one beginning in (0,0) going right.
             let findValidMove (hand) (board:board) (dict:Dictionary.Dict) = 
                 let list = Map.toList board.tiles
                 let directionDown = (Coord.mkCoordinate 0 1)
@@ -205,6 +225,8 @@ module Scrabble =
                 if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "") hand
                 else
                     let findValidMoveRight = findValidMoveHelper hand dict list board directionRight 
+                    //if findValidMoveRight.IsEmpty then
+                      //  let findValidMoveRight = findValidMoveHelper hand dict list board directionRight
                     printf "found right\n"
                     let findValidMoveDown = findValidMoveHelper hand dict list board directionDown
                     printf "found down\n"
@@ -232,7 +254,7 @@ module Scrabble =
             //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             let tilesInBag = 100-(Map.count st.board.tiles) - (int (MultiSet.size st.hand))
-            
+            printf "pieces used: %s \n" (string (Map.count st.board.tiles))
             let tilesToChange = (MultiSet.toList st.hand)[0..tilesInBag] 
             let handAfterChange = List.fold (fun acc x -> MultiSet.removeSingle x acc) st.hand tilesToChange
             if move.IsEmpty then 
