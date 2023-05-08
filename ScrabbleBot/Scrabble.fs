@@ -89,11 +89,15 @@ module Scrabble =
                     
             let rec findValidWord (hand:MultiSet.MultiSet<uint32>) (dict:Dictionary.Dict) (maxLength : int) (localAcc:string) : string =
                 MultiSet.fold (fun acc letter count -> 
+                    let newHand = MultiSet.removeSingle letter hand
+                    let letter = 
+                        match letter with
+                        | 0u -> 5u
+                        | _ -> letter
                     match Dictionary.step (uintToChar letter) dict with 
                     | Some (endOfWord, subDict) ->
                         let sLetter = (uintToChar letter)
                         let currentString = localAcc + (string) sLetter
-                        let newHand = MultiSet.removeSingle letter hand
                         let branch = findValidWord newHand subDict maxLength currentString
                         if endOfWord && currentString.Length > branch.Length && currentString.Length > acc.Length && currentString.Length < maxLength then currentString
                         elif branch.Length > acc.Length && branch.Length < maxLength then branch
@@ -101,8 +105,8 @@ module Scrabble =
                     | None -> acc
                 ) "" hand
 
-            let makeMove (startPos:coord) (direction:coord) (word:string)  = 
-                let rec moveHelper (pos:coord) direction remainingWord (moves:list<coord * (uint32 * (char * int))>) =
+            let makeMove (startPos:coord) (direction:coord) (word:string) (hand:MultiSet.MultiSet<uint32>) = 
+                let rec moveHelper (pos:coord) direction remainingWord (moves:list<coord * (uint32 * (char * int))>) (hand:MultiSet.MultiSet<uint32>) =
                     let newPos:coord =
                         if Coord.getX direction = 1 then
                             Coord.mkCoordinate (Coord.getX pos + 1) (Coord.getY pos)
@@ -111,9 +115,18 @@ module Scrabble =
                     match remainingWord with
                     | [] -> moves
                     | w::xs -> 
-                        let move = (pos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
-                        moveHelper newPos direction xs (move :: moves)
-                moveHelper startPos direction (Seq.toList(word)) []
+                        let move = 
+                            match MultiSet.contains (charToUint w) hand with
+                            | true -> 
+                                (pos,(charToUint (char(w)),(char(w),convertToPoints (charToUint(w)) pieces)))
+                            | false -> 
+                                (pos,((0u),(char(w),0)))
+                        let newHand = 
+                            match MultiSet.contains (charToUint w) hand with
+                            | true -> MultiSet.removeSingle (charToUint w) hand
+                            | false -> MultiSet.removeSingle (0u) hand
+                        moveHelper newPos direction xs (move :: moves) newHand
+                moveHelper startPos direction (Seq.toList(word)) [] hand
 
             let findAdjacent (coord: coord) (direction: coord) =
                 let next = Coord.mkCoordinate(Coord.getX coord + Coord.getX direction) (Coord.getY coord + Coord.getY direction)
@@ -174,11 +187,11 @@ module Scrabble =
                         let lengthFromStarter = findLengthFromStarter lastCoordInSubString direction board
                         // printf "length from starter: %i \n" lengthFromStarter
                         let word = findValidWord hand dictionaryDepth lengthFromStarter subString
-                        printf "our valid word! %s \n" word
+                        //printf "our valid word! %s \n" word
                         let wordWithoutAlreadyPlaced = word[subString.Length .. word.Length]
                         // printf "word: %s \n" wordWithoutAlreadyPlaced
                         if (word.Length < 1 || Dictionary.lookup word dict) then 
-                            let move = makeMove (Coord.mkCoordinate (Coord.getX lastCoordInSubString + Coord.getX direction) (Coord.getY lastCoordInSubString + Coord.getY direction)) direction wordWithoutAlreadyPlaced
+                            let move = makeMove (Coord.mkCoordinate (Coord.getX lastCoordInSubString + Coord.getX direction) (Coord.getY lastCoordInSubString + Coord.getY direction)) direction wordWithoutAlreadyPlaced hand
                             if move.IsEmpty then aux hand xs dict direction
                             else move
                         else aux hand xs dict direction
@@ -189,7 +202,7 @@ module Scrabble =
                 let list = Map.toList board.tiles
                 let directionDown = (Coord.mkCoordinate 0 1)
                 let directionRight =  (Coord.mkCoordinate 1 0) 
-                if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "")
+                if list.IsEmpty then makeMove (0, 0) (1, 0) (findValidWord st.hand st.dict 7 "") hand
                 else
                     let findValidMoveRight = findValidMoveHelper hand dict list board directionRight 
                     printf "found right\n"
@@ -218,12 +231,17 @@ module Scrabble =
             let move = findValidMove st.hand st.board st.dict 
             //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
-            if move.IsEmpty then forcePrint "changing pieces\n"
+            let tilesInBag = 100-(Map.count st.board.tiles) - (int (MultiSet.size st.hand))
+            
+            let tilesToChange = (MultiSet.toList st.hand)[0..tilesInBag] 
+            let handAfterChange = List.fold (fun acc x -> MultiSet.removeSingle x acc) st.hand tilesToChange
             if move.IsEmpty then 
                 let list = MultiSet.toList (st.hand)
-                forcePrint ("hand size when changing pieces: ")
-                forcePrint ((string list.Length)+ "\n")
-                send cstream (SMChange (MultiSet.toList st.hand))
+                printf "tilesInBag: %s \n" (string tilesInBag)
+                //forcePrint ("hand size when changing pieces: ")
+                //forcePrint ((string list.Length)+ "\n")
+                send cstream (SMChange (tilesToChange))
+                
             else send cstream (SMPlay move)
 
             let msg = recv cstream
@@ -241,8 +259,7 @@ module Scrabble =
                 | x::xs -> addNewPiecesToHand xs (MultiSet.add (fst x) (snd x) hand)
 
             let changePiecesInHand (newPieces : (uint32 * uint32) list) =
-                let emptyHand = MultiSet.empty
-                addNewPiecesToHand newPieces emptyHand
+                addNewPiecesToHand newPieces handAfterChange
 
             let rec updateTiles (ms : ((coord * (uint32 * (char * int))) list)) (tiles : Map<coord, uint32>) = 
                 match ms with
@@ -274,7 +291,8 @@ module Scrabble =
                 let st' = updateState newBoard st.dict st.playerNumber handAddedNewPieces
                 forcePrint ("pieces played: " + (string (ms.Length) + "\n"))
                 forcePrint ("handsize after removing played pieces: " + (string (MultiSet.size(handRemovedUsedPieces))) + "\n")
-
+                
+                printf "board size: %s \n" (string (Map.count newBoard.tiles))
                 printf "making a new move!\n"
                 printf "hand size after play: %s \n" (string (MultiSet.size st'.hand))
                 aux st'
