@@ -276,12 +276,12 @@ module Scrabble =
             //forcePrint (string move)
             debugPrint (sprintf "Player %d -> Server:\n%A\n" (State.playerNumber st) move) // keep the debug lines. They are useful.
             let tilesInBag = 100-(Map.count st.board.tiles) - (int (MultiSet.size st.hand))
-            printf "pieces used: %s \n" (string (Map.count st.board.tiles))
+            //printf "pieces used: %s \n" (string (Map.count st.board.tiles))
             let tilesToChange = (MultiSet.toList st.hand)[0..tilesInBag] 
             let handAfterChange = List.fold (fun acc x -> MultiSet.removeSingle x acc) st.hand tilesToChange
             if move.IsEmpty then 
                 let list = MultiSet.toList (st.hand)
-                printf "tilesInBag: %s \n" (string tilesInBag)
+                //printf "tilesInBag: %s \n" (string tilesInBag)
                 //forcePrint ("hand size when changing pieces: ")
                 //forcePrint ((string list.Length)+ "\n")
                 send cstream (SMChange (tilesToChange))
@@ -313,18 +313,18 @@ module Scrabble =
             let updateState board dict playerNumber hand =
                 State.mkState board dict playerNumber hand
 
-            printf "response: %s\n" (string msg)
+            //printf "response: %s\n" (string msg)
 
             match msg with
             | RCM (CMChangeSuccess(newPieces)) ->
-                printf "Changing to new pieces! \n"
-                printf "Old hand: %s \n" (string st.hand) 
+                //printf "Changing to new pieces! \n"
+                //printf "Old hand: %s \n" (string st.hand) 
                 let handChangedToNewPieces = changePiecesInHand newPieces
                 let st' = updateState st.board st.dict st.playerNumber handChangedToNewPieces
-                printf "New hand: %s \n" (string st'.hand)
+                //printf "New hand: %s \n" (string st'.hand)
                 aux st'
             | RCM (CMPlaySuccess(ms, points, newPieces)) ->
-                printf "Hand: %s \n" (string st.hand) 
+                //printf "Hand: %s \n" (string st.hand) 
                 forcePrint ("pieces played: " + (string (ms.Length) + "\n"))
                 forcePrint ("new pieces size: " + (string ((newPieces.Length))) + "\n")
                 let newTiles = updateTiles ms st.board.tiles
@@ -336,13 +336,13 @@ module Scrabble =
                 forcePrint ("pieces played: " + (string (ms.Length) + "\n"))
                 forcePrint ("handsize after removing played pieces: " + (string (MultiSet.size(handRemovedUsedPieces))) + "\n")
                 
-                printf "board size: %s \n" (string (Map.count newBoard.tiles))
-                printf "making a new move!\n"
-                printf "hand size after play: %s \n" (string (MultiSet.size st'.hand))
+                //printf "board size: %s \n" (string (Map.count newBoard.tiles))
+                //printf "making a new move!\n"
+                //printf "hand size after play: %s \n" (string (MultiSet.size st'.hand))
                 aux st'
             | RCM (CMPlayed (pid, ms, points)) ->
                 (* Successful play by other player. Update your state *)
-                printf "move was made!\n"
+                //printf "move was made!\n"
                 let newTiles = updateTiles ms st.board.tiles
                 let newBoard = Parser.mkBoard newTiles
                 let st' = updateState newBoard st.dict st.playerNumber st.hand
@@ -355,7 +355,7 @@ module Scrabble =
             | RCM (CMGameOver _) -> ()
             | RCM a -> aux st
             | RGPE err -> 
-                printfn "Gameplay Error:\n%A" err; 
+                //printfn "Gameplay Error:\n%A" err; 
                 send cstream (SMPass)
                 aux st
 
